@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,15 @@ namespace Graph
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
+        }
+
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Dictionary<string, DataVertex> vertices = new Dictionary<string, DataVertex>();
+            List<DataEdge> edges = new List<DataEdge>();
+            FileParser.parse(App.FilePath, ref vertices, ref edges);
+            Debug.WriteLine(vertices);
         }
     }
 }
