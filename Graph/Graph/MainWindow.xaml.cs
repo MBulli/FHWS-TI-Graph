@@ -36,6 +36,8 @@ namespace Graph
 
             var graph = new DataGraph(vertices.Values, edges);
             graphArea.GenerateGraph(graph);
+            
+            zoomControl.ZoomToFill();
         }
     }
 }

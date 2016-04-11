@@ -19,5 +19,10 @@ namespace Graph
         {
             Data = data;
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

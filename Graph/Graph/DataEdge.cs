@@ -17,5 +17,10 @@ namespace Graph
         {
 
         }
+
+        public override string ToString()
+        {
+            return Weight.ToString();
+        }
     }
 }

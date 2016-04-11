@@ -1,4 +1,5 @@
 ﻿using GraphX.Controls;
+using GraphX.Controls.Models;
 using GraphX.PCL.Logic.Models;
 using QuickGraph;
 using System;
@@ -14,6 +15,7 @@ namespace Graph
         public VisualGraphArea()
         {
             this.LogicCore = new VisualGraphLogicCore();
+            this.EdgeLabelFactory = new DefaultEdgelabelFactory();
         }
     }
 
