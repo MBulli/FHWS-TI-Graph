@@ -33,6 +33,9 @@ namespace Graph
             List<DataEdge> edges = new List<DataEdge>();
             FileParser.parse(App.FilePath, ref vertices, ref edges);
             Debug.WriteLine(vertices);
+
+            var graph = new DataGraph(vertices.Values, edges);
+            graphArea.GenerateGraph(graph);
         }
     }
 }

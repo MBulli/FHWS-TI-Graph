@@ -83,6 +83,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="VisualGraphArea.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -92,6 +93,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataEdge.cs" />
+    <Compile Include="DataGraph.cs" />
     <Compile Include="DataVertex.cs" />
     <Compile Include="FileParser.cs" />
     <Compile Include="MainWindow.xaml.cs">
