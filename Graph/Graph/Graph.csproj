@@ -83,7 +83,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Aufgabe2.cs" />
     <Compile Include="DepthFirstSearchVisitorBase.cs" />
+    <Compile Include="EulerProblemSolver.cs" />
     <Compile Include="VisualGraphArea.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
