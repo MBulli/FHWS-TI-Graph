@@ -11,6 +11,10 @@ namespace Graph
     {
         DepthFirstSearchAlgorithm<DataVertex, DataEdge> algo;
 
+        public DepthFirstSearchVisitorBase(DataGraph grapToVisit)
+            : this(new DepthFirstSearchAlgorithm<DataVertex, DataEdge>(grapToVisit))
+        { }
+
         public DepthFirstSearchVisitorBase(DepthFirstSearchAlgorithm<DataVertex, DataEdge> algo)
         {
             if (algo == null)
@@ -23,6 +27,11 @@ namespace Graph
             algo.Started += Algo_Started;
             algo.Finished += Algo_Finished;
             algo.Aborted += Algo_Aborted;
+        }
+
+        public void Start()
+        {
+            algo.Compute();
         }
         
         protected virtual void SearchStarted() { }
