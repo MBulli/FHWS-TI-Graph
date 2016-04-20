@@ -21,10 +21,10 @@ namespace Graph {
             FileParser.parse(path, ref vertices, ref edges);
 
             var graph = new DataGraph(vertices.Values, edges);
-            EulerProblemSolver euler = new EulerProblemSolver(graph);
             Debug.WriteLine("EulerSolver for File: " + path);
-            Debug.WriteLine("Kreis: " + euler.IsEulerKreis);
-            Debug.WriteLine("Pfad: " + euler.IsEulerPfad);
+            EulerProblemSolver euler = new EulerProblemSolver(graph);
+            Debug.WriteLine("Eulerkreis: " + euler.IsEulerKreis);
+            Debug.WriteLine("Eulerpfad: " + euler.IsEulerPfad);
         }
     }
 }
