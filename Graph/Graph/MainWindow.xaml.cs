@@ -29,13 +29,14 @@ namespace Graph
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, DataVertex> vertices = new Dictionary<string, DataVertex>();
-            List<DataEdge> edges = new List<DataEdge>();
+            var vertices = new Dictionary<string, Vertex>();
+            var edges = new List<Edge>();
+
             FileParser.parse(App.FilePath, ref vertices, ref edges);
             Debug.WriteLine(vertices);
 
-            var graph = new DataGraph(vertices.Values, edges);
-            graphArea.GenerateGraph(graph);
+            var graph = new Grapher(false, vertices, edges);
+            graphArea.GenerateGraph(graph); 
 
             Aufgabe2.A();
             zoomControl.ZoomToFill();

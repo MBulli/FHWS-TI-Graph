@@ -9,7 +9,7 @@ namespace Graph
 {
     class FileParser
     {
-        public static void parse(string path, ref Dictionary<string, DataVertex> vertices, ref List<DataEdge> edges)
+        public static void parse(string path, ref Dictionary<string, Vertex> vertices, ref List<Edge> edges)
         {
             string[] content = File.ReadAllLines(path);
             foreach(string line in content)
@@ -22,30 +22,30 @@ namespace Graph
                 if(subs[0] == "knoten")
                 {
                     string name = subs[1];
-                    DataVertex vertex = new DataVertex(name);
-                    if(subs.Length == 3 && subs[2].Length > 0)
-                    {
-                        vertex.Data = subs[2];
-                    }
+                    string data = null;
+
                     if (vertices.ContainsKey(name))
-                    {
                         throw new InvalidOperationException("a vertex with the name " + name + " already exists");
-                    }
-                    else
+
+                    if (subs.Length == 3 && subs[2].Length > 0)
                     {
-                        vertices[name] = vertex;
+                        data = subs[2];
                     }
+
+                    vertices[name] = new Vertex(name, data);
                 }
                 else if(subs[0] == "kante")
                 {
                     string from = subs[1];
                     string to = subs[2];
                     double gewicht = 1.0;
+
                     if (subs.Length == 4 && subs[3].Length > 0)
                     {
                         gewicht = double.Parse(subs[3]);
                     }
-                    DataEdge edge = new DataEdge(vertices[from], vertices[to], gewicht);
+
+                    Edge edge = new Edge(vertices[from], vertices[to], gewicht);
                     edges.Add(edge);
                 }
             }
