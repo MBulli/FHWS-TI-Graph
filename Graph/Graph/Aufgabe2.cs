@@ -14,36 +14,26 @@ namespace Graph
             if (false)
             {
                 var result = A(@"TestFiles\Euler1.txt");
-                AssertIsFalse(result.IsEulerKreis);
-                AssertIsFalse(result.IsEulerPfad);
+                Assert.IsFalse(result.IsEulerKreis);
+                Assert.IsFalse(result.IsEulerPfad);
             }
 
             if (false)
             {
                 var result = A(@"TestFiles\Euler2.txt");
-                AssertIsFalse(result.IsEulerKreis);
-                AssertIsTrue(result.IsEulerPfad);
+                Assert.IsFalse(result.IsEulerKreis);
+                Assert.IsTrue(result.IsEulerPfad);
             }
 
             if(true)
             {
                 var result = A(@"TestFiles\KeinKreis.txt");
-                AssertIsTrue(result.IsKreis);
+                Assert.IsTrue(result.IsKreis);
             }
 
         }
 
-        private static void AssertIsTrue(bool value)
-        {
-            if (!value)
-                throw new Exception();
-        }
 
-        private static void AssertIsFalse(bool value)
-        {
-            if (value)
-                throw new Exception();
-        }
 
         private static EulerProblemSolver A(string path)
         {

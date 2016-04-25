@@ -88,6 +88,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AdjacencyMatrix.cs" />
+    <Compile Include="Assert.cs" />
     <Compile Include="Aufgabe2.cs" />
     <Compile Include="EulerProblemSolver.cs" />
     <Compile Include="Extension.cs" />
