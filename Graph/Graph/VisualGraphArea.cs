@@ -1,13 +1,18 @@
-﻿using GraphX.Controls;
+﻿using QuickGraph;
+
+using GraphX;
+using GraphX.Controls;
 using GraphX.Controls.Models;
 using GraphX.PCL.Common.Models;
 using GraphX.PCL.Logic.Models;
-using QuickGraph;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Media;
 
 namespace Graph
 {
@@ -17,12 +22,15 @@ namespace Graph
         {
             this.LogicCore = new VisualGraphLogicCore();
             this.EdgeLabelFactory = new DefaultEdgelabelFactory();
+            this.ControlFactory = new VisualGraphControlFactory(this);
         }
 
         public void GenerateGraph(Grapher g)
         {
             var biGraph = ConvertGraph(g);
             base.GenerateGraph(biGraph);
+
+            ShowAllEdgesArrows(g.IsDirected);
         }
 
         private QuickGraph.BidirectionalGraph<VisualVertex, VisualEdge> ConvertGraph(Grapher graph)
@@ -69,6 +77,51 @@ namespace Graph
         public override string ToString()
         {
             return Weight.ToString();
+        }
+    }
+
+    class VisualGraphControlFactory : GraphControlFactory
+    {
+        public VisualGraphControlFactory(GraphAreaBase graphArea)
+            : base(graphArea)
+        {
+        }
+
+        public override EdgeControl CreateEdgeControl(VertexControl source, VertexControl target, object edge, bool showLabels = false, bool showArrows = true, Visibility visibility = Visibility.Visible)
+        {
+            return new VisualEdgeControl() {       
+                Source = source,
+                Target = target,
+                Edge = edge,
+                ShowLabel = showLabels,
+                ShowArrows = showArrows,
+                Visibility = visibility
+            };
+        }
+    }
+
+    class VisualEdgeControl : EdgeControl
+    {
+        public override void OnApplyTemplate()
+        {
+            base.OnApplyTemplate();
+
+            if (!ShowArrows)
+            {
+                // Hide arrow
+                EdgePointerForSource?.Hide();
+                EdgePointerForTarget?.Hide();
+
+                // Force line length to connect source/target
+                _linegeometry = new PathGeometry(new[]
+                {
+                    new PathFigure(Source.GetCenterPosition(), new [] {
+                        new LineSegment(Target.GetCenterPosition(), isStroked: true)
+                    }, closed: false)
+                });
+                
+                LinePathObject.Data = _linegeometry;
+            }
         }
     }
 }
