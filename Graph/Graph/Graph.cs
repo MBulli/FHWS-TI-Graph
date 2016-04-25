@@ -43,6 +43,11 @@ namespace Graph
             return vertices.FirstOrDefault().Value;
         }
 
+        public bool ContainsVertex(string name)
+        {
+            return vertices.ContainsKey(name);
+        }
+
         public Vertex VertexForName(string name)
         {
             return vertices[name];
@@ -63,11 +68,19 @@ namespace Graph
                 AddVertex(v);
         }
 
-        public virtual Edge AddEdge(Vertex v0, Vertex v1)
+        public virtual Edge AddEdge(Vertex v0, Vertex v1, double weight = 0)
         {
-            var e = new Edge(v0, v1);
+            var e = new Edge(v0, v1, weight);
             edges.Add(e);
             return e;
+        }
+
+        public Edge AddEdge(string name0, string name1, double weight = 0)
+        {
+            var v0 = VertexForName(name0);
+            var v1 = VertexForName(name1);
+
+            return AddEdge(v0, v1, weight);
         }
 
         public bool Adjacent(Vertex v0, Vertex v1)

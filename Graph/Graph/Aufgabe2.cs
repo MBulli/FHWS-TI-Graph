@@ -18,14 +18,14 @@ namespace Graph
                 Assert.IsFalse(result.IsEulerPfad);
             }
 
-            if (false)
+            if (true)
             {
                 var result = A(@"TestFiles\Euler2.txt");
                 Assert.IsFalse(result.IsEulerKreis);
                 Assert.IsTrue(result.IsEulerPfad);
             }
 
-            if(true)
+            if(false)
             {
                 var result = A(@"TestFiles\KeinKreis.txt");
                 Assert.IsTrue(result.IsKreis);
@@ -37,11 +37,8 @@ namespace Graph
 
         private static EulerProblemSolver A(string path)
         {
-            var vertices = new Dictionary<string, Vertex>();
-            var edges = new List<Edge>();
-            FileParser.parse(path, ref vertices, ref edges);
+            var graph = FileParser.Parse(path);
 
-            var graph = new Grapher(false, vertices, edges);
             Debug.WriteLine("EulerSolver for File: " + path);
 
             EulerProblemSolver euler = new EulerProblemSolver(graph);

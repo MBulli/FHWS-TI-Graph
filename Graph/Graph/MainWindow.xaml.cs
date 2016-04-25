@@ -31,13 +31,7 @@ namespace Graph
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var vertices = new Dictionary<string, Vertex>();
-            var edges = new List<Edge>();
-
-            FileParser.parse(App.FilePath, ref vertices, ref edges);
-            Debug.WriteLine(vertices);
-
-            var graph = new Grapher(false, vertices, edges);
+            var graph = FileParser.Parse(App.FilePath);
             graphArea.GenerateGraph(graph); 
 
             Aufgabe2.A();
