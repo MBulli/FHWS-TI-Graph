@@ -25,6 +25,8 @@ namespace Graph
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
+
+            Debug.Listeners.Add(new TextboxTraceListener(logTexbox));
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -40,6 +42,27 @@ namespace Graph
 
             Aufgabe2.A();
             zoomControl.ZoomToFill();
+        }
+    }
+
+    class TextboxTraceListener : TraceListener
+    {
+        private TextBox textbox;
+
+        public TextboxTraceListener(TextBox tb)
+        {
+            textbox = tb;
+        }
+
+        public override void Write(string message)
+        {
+            textbox?.AppendText(message);
+        }
+
+        public override void WriteLine(string message)
+        {
+            textbox?.AppendText(message);
+            textbox?.AppendText(Environment.NewLine);
         }
     }
 }
