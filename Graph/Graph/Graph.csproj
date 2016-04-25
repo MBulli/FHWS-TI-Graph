@@ -92,6 +92,7 @@
     <Compile Include="EulerProblemSolver.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Graph.cs" />
+    <Compile Include="KreisProblemSolver.cs" />
     <Compile Include="VisualGraphArea.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

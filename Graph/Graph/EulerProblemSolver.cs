@@ -12,6 +12,7 @@ namespace Graph
         private Grapher graph;
         public bool IsEulerKreis { get; private set; }
         public bool IsEulerPfad { get; private set; }
+        public bool IsKreis { get; set; }
 
 
         public EulerProblemSolver(Grapher graph)

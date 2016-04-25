@@ -11,7 +11,7 @@ namespace Graph
     {
         public static void A()
         {
-            if (true)
+            if (false)
             {
                 var result = A(@"TestFiles\Euler1.txt");
                 AssertIsFalse(result.IsEulerKreis);
@@ -23,6 +23,12 @@ namespace Graph
                 var result = A(@"TestFiles\Euler2.txt");
                 AssertIsFalse(result.IsEulerKreis);
                 AssertIsTrue(result.IsEulerPfad);
+            }
+
+            if(true)
+            {
+                var result = A(@"TestFiles\KeinKreis.txt");
+                AssertIsTrue(result.IsKreis);
             }
 
         }
@@ -50,8 +56,11 @@ namespace Graph
 
             EulerProblemSolver euler = new EulerProblemSolver(graph);
 
+            euler.IsKreis = KreisProblemSolver.KreisSuche(graph);
+
             Debug.WriteLine("Eulerkreis: " + euler.IsEulerKreis);
             Debug.WriteLine("Eulerpfad: " + euler.IsEulerPfad);
+            Debug.WriteLine("Kreis: " + euler.IsKreis);
 
             return euler;
         }

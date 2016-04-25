@@ -17,6 +17,8 @@ namespace Graph
 
         public readonly bool IsDirected = false;
 
+        public bool IsEmpty { get { return vertices.Count == 0; } }
+
         public Grapher(bool directed = false)
         {
             this.IsDirected = directed;
