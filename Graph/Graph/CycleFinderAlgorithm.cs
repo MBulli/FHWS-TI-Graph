@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
-    static class KreisFinderAlgorithm
+    static class CycleFinderAlgorithm
     {
-        public static bool KreisSuche(Grapher<VertexBase> graph)
+        public static bool FindCycle(Grapher<VertexBase> graph)
         {
             if (graph.IsEmpty)
                 return false;
@@ -20,7 +20,7 @@ namespace Graph
 
             foreach (var v in graph.Neighbours(root))
             {
-                if (NaechsterNachbar(graph, discoveredVertices, root, v))
+                if (NextNeighbour(graph, discoveredVertices, root, v))
                 {
                     return true;
                 }
@@ -29,7 +29,7 @@ namespace Graph
             return false;
         }
 
-        private static bool NaechsterNachbar(Grapher<VertexBase> graph, HashSet<VertexBase> discoveredVertices, VertexBase source, VertexBase target)
+        private static bool NextNeighbour(Grapher<VertexBase> graph, HashSet<VertexBase> discoveredVertices, VertexBase source, VertexBase target)
         {   
             if (IsVertexDiscovered(discoveredVertices, target))
                 return true;
@@ -41,7 +41,7 @@ namespace Graph
                 if (v.Name == source.Name)
                     continue;
 
-                if (NaechsterNachbar(graph, discoveredVertices, target, v))
+                if (NextNeighbour(graph, discoveredVertices, target, v))
                 {
                     return true;
                 }

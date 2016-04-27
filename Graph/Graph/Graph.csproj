@@ -95,10 +95,10 @@
     <Compile Include="Assert.cs" />
     <Compile Include="Aufgabe2.cs" />
     <Compile Include="DijkstraAlgorithm.cs" />
-    <Compile Include="EulerProblemSolver.cs" />
+    <Compile Include="EulerFinderAlgorithm.cs" />
     <Compile Include="Extension.cs" />
     <Compile Include="Graph.cs" />
-    <Compile Include="KreisFinderAlgorithm.cs" />
+    <Compile Include="CycleFinderAlgorithm.cs" />
     <Compile Include="VisualGraphArea.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -152,9 +152,9 @@
     <Content Include="TestFiles\Euler2.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Resource Include="TestFiles\KeinKreis.txt">
+    <Content Include="TestFiles\KeinKreis.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -11,45 +11,51 @@ namespace Graph
     {
         public static void A()
         {
-            if (true)
+            if (false)
             {
                 var result = A(@"TestFiles\Euler1.txt");
-                //Assert.IsFalse(result.IsEulerKreis);
-                //Assert.IsFalse(result.IsEulerPfad);
+                Assert.IsFalse(result.HasEulerCycle);
+                Assert.IsFalse(result.HasEulerPath);
             }
 
             if (false)
             {
                 var result = A(@"TestFiles\Euler2.txt");
-                //Assert.IsFalse(result.IsEulerKreis);
-                //Assert.IsTrue(result.IsEulerPfad);
+                Assert.IsFalse(result.HasEulerCycle);
+                Assert.IsTrue(result.HasEulerPath);
             }
 
-            if(false)
+            if(true)
             {
-                var result = A(@"TestFiles\KeinKreis.txt");
-                //Assert.IsTrue(result.IsKreis);
+                var result = A(@"TestFiles\keinKreis.txt");
+                Assert.IsFalse(result.HasCycle);
             }
 
         }
 
-
-
-        private static EulerProblemSolver A(string path)
+        private static Aufgabe2Results A(string path)
         {
             var graph = FileParser.Parse(path);
 
             Debug.WriteLine("EulerSolver for File: " + path);
 
-            EulerProblemSolver euler = new EulerProblemSolver(graph);
+            var result = new Aufgabe2Results();
+            result.HasEulerCycle = EulerFinderAlgorithm.FindEulerCycle(graph);
+            result.HasEulerPath = EulerFinderAlgorithm.FindEulerPath(graph);
+            result.HasCycle = CycleFinderAlgorithm.FindCycle(graph);
 
-            euler.IsKreis = KreisFinderAlgorithm.KreisSuche(graph);
+            Debug.WriteLine("Eulerkreis: " + result.HasEulerCycle);
+            Debug.WriteLine("Eulerpfad: " + result.HasEulerPath);
+            Debug.WriteLine("Kreis: " + result.HasCycle);
 
-            Debug.WriteLine("Eulerkreis: " + euler.IsEulerKreis);
-            Debug.WriteLine("Eulerpfad: " + euler.IsEulerPfad);
-            Debug.WriteLine("Kreis: " + euler.IsKreis);
-
-            return euler;
+            return result;
         }
+    }
+
+    public class Aufgabe2Results
+    {
+        public bool HasEulerCycle;
+        public bool HasEulerPath;
+        public bool HasCycle;
     }
 }
