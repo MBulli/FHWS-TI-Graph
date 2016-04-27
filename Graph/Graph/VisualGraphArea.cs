@@ -25,7 +25,7 @@ namespace Graph
             this.ControlFactory = new VisualGraphControlFactory(this);
         }
 
-        public void GenerateGraph(Grapher g)
+        public void GenerateGraph(Grapher<VertexBase> g)
         {
             var biGraph = ConvertGraph(g);
             base.GenerateGraph(biGraph);
@@ -33,7 +33,7 @@ namespace Graph
             ShowAllEdgesArrows(g.IsDirected);
         }
 
-        private QuickGraph.BidirectionalGraph<VisualVertex, VisualEdge> ConvertGraph(Grapher graph)
+        private QuickGraph.BidirectionalGraph<VisualVertex, VisualEdge> ConvertGraph(Grapher<VertexBase> graph)
         {
             var result = new QuickGraph.BidirectionalGraph<VisualVertex, VisualEdge>();
 
@@ -51,7 +51,7 @@ namespace Graph
 
     }
 
-    class VisualVertex : VertexBase
+    class VisualVertex : GraphX.PCL.Common.Models.VertexBase
     {
         public readonly string Name;
         public readonly string Data;
@@ -68,7 +68,7 @@ namespace Graph
         }
     }
 
-    class VisualEdge : EdgeBase<VisualVertex>
+    class VisualEdge : GraphX.PCL.Common.Models.EdgeBase<VisualVertex>
     {
         public VisualEdge(VisualVertex source, VisualVertex target, double weight = 1)
             : base(source, target, weight)

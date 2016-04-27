@@ -9,9 +9,9 @@ namespace Graph
 {
     class FileParser
     {
-        public static Grapher Parse(string path, bool directedGraph = false)
+        public static Grapher<VertexBase> Parse(string path, bool directedGraph = false)
         {
-            Grapher result = new Grapher(directed: directedGraph);
+            Grapher<VertexBase> result = new Grapher<VertexBase>(directed: directedGraph);
             string[] content = File.ReadAllLines(path);
 
             foreach(string line in content)
@@ -34,7 +34,7 @@ namespace Graph
                         data = subs[2];
                     }
 
-                    result.AddVertex(new Vertex(name, data));
+                    result.AddVertex(new VertexBase(name, data));
                 }
                 else if(subs[0] == "kante")
                 {

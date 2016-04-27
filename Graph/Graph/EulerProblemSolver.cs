@@ -9,13 +9,13 @@ namespace Graph
 {
     class EulerProblemSolver
     {
-        private Grapher graph;
+        private Grapher<VertexBase> graph;
         public bool IsEulerKreis { get; private set; }
         public bool IsEulerPfad { get; private set; }
         public bool IsKreis { get; set; }
 
 
-        public EulerProblemSolver(Grapher graph)
+        public EulerProblemSolver(Grapher<VertexBase> graph)
         {
             this.graph = graph;
             JustDoIt();
@@ -31,8 +31,8 @@ namespace Graph
             Debug.WriteLine("");
             Debug.Write("Vertices discovered: ");
 
-            var visitedEven = new List<Vertex>();
-            var visitedUnEven = new List<Vertex>();
+            var visitedEven = new List<VertexBase>();
+            var visitedUnEven = new List<VertexBase>();
 
             graph.DepthFirstSearch(vertex => 
             {

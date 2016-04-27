@@ -11,24 +11,24 @@ namespace Graph
     {
         public static void A()
         {
-            if (false)
-            {
-                var result = A(@"TestFiles\Euler1.txt");
-                Assert.IsFalse(result.IsEulerKreis);
-                Assert.IsFalse(result.IsEulerPfad);
-            }
-
             if (true)
             {
+                var result = A(@"TestFiles\Euler1.txt");
+                //Assert.IsFalse(result.IsEulerKreis);
+                //Assert.IsFalse(result.IsEulerPfad);
+            }
+
+            if (false)
+            {
                 var result = A(@"TestFiles\Euler2.txt");
-                Assert.IsFalse(result.IsEulerKreis);
-                Assert.IsTrue(result.IsEulerPfad);
+                //Assert.IsFalse(result.IsEulerKreis);
+                //Assert.IsTrue(result.IsEulerPfad);
             }
 
             if(false)
             {
                 var result = A(@"TestFiles\KeinKreis.txt");
-                Assert.IsTrue(result.IsKreis);
+                //Assert.IsTrue(result.IsKreis);
             }
 
         }
@@ -43,7 +43,7 @@ namespace Graph
 
             EulerProblemSolver euler = new EulerProblemSolver(graph);
 
-            euler.IsKreis = KreisProblemSolver.KreisSuche(graph);
+            euler.IsKreis = KreisFinderAlgorithm.KreisSuche(graph);
 
             Debug.WriteLine("Eulerkreis: " + euler.IsEulerKreis);
             Debug.WriteLine("Eulerpfad: " + euler.IsEulerPfad);

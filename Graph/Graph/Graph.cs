@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
-    public class Grapher
+    public class Grapher<TVertex>
+        where TVertex : VertexBase
     {
-        protected readonly Dictionary<string, Vertex> vertices = new Dictionary<string, Vertex>();
-        protected readonly HashSet<Edge> edges = new HashSet<Edge>();
+        protected readonly Dictionary<string, TVertex> vertices = new Dictionary<string, TVertex>();
+        protected readonly HashSet<EdgeBase<TVertex>> edges = new HashSet<EdgeBase<TVertex>>();
 
-        public IEnumerable<Vertex> Vertices { get { return vertices.Values; } }
-        public IEnumerable<Edge> Edges { get { return edges; } }
-        public Vertex this[string name] { get { return vertices[name]; } }
+        public IEnumerable<TVertex> Vertices { get { return vertices.Values; } }
+        public IEnumerable<EdgeBase<TVertex>> Edges { get { return edges; } }
+        public TVertex this[string name] { get { return vertices[name]; } }
 
         public readonly bool IsDirected = false;
 
@@ -24,21 +25,21 @@ namespace Graph
             this.IsDirected = directed;
         }
 
-        public Grapher(bool directed, IDictionary<string, Vertex> vertices, IEnumerable<Edge> edges)
+        public Grapher(bool directed, IDictionary<string, TVertex> vertices, IEnumerable<EdgeBase<TVertex>> edges)
             : this(directed)
         {
-            this.vertices = new Dictionary<string, Vertex>(vertices);
-            this.edges = new HashSet<Edge>(edges);
+            this.vertices = new Dictionary<string, TVertex>(vertices);
+            this.edges = new HashSet<EdgeBase<TVertex>>(edges);
         }
 
-        protected Grapher(Grapher g)
+        protected Grapher(Grapher<TVertex> g)
         {
             this.IsDirected = g.IsDirected;
-            this.vertices = new Dictionary<string,Vertex>(g.vertices);
-            this.edges = new HashSet<Edge>(g.edges);
+            this.vertices = new Dictionary<string, TVertex>(g.vertices);
+            this.edges = new HashSet<EdgeBase<TVertex>>(g.edges);
         }
 
-        public Vertex AnyVertex()
+        public TVertex AnyVertex()
         {
             return vertices.FirstOrDefault().Value;
         }
@@ -48,34 +49,35 @@ namespace Graph
             return vertices.ContainsKey(name);
         }
 
-        public Vertex VertexForName(string name)
+        public TVertex VertexForName(string name)
         {
             return vertices[name];
         }
 
-        public Vertex AddVertex(string name)
-        {
-            return AddVertex(new Vertex(name));
-        }
-        public Vertex AddVertex(Vertex v)
+        public TVertex AddVertex(TVertex v)
         {
             vertices.Add(v.Name, v);
             return v;
         }
-        public void AddVerticies(IEnumerable<Vertex> newVerticies)
+        public void AddVertices(IEnumerable<TVertex> newVertices)
         {
-            foreach (var v in newVerticies)
+            foreach (var v in newVertices)
                 AddVertex(v);
         }
 
-        public virtual Edge AddEdge(Vertex v0, Vertex v1, double weight = 0)
+        public void AddEdge(EdgeBase<TVertex> e)
         {
-            var e = new Edge(v0, v1, weight);
             edges.Add(e);
+        }
+
+        public virtual EdgeBase<TVertex> AddEdge(TVertex v0, TVertex v1, double weight = 0)
+        {
+            var e = new EdgeBase<TVertex>(v0, v1, weight);
+            AddEdge(e);
             return e;
         }
 
-        public Edge AddEdge(string name0, string name1, double weight = 0)
+        public EdgeBase<TVertex> AddEdge(string name0, string name1, double weight = 0)
         {
             var v0 = VertexForName(name0);
             var v1 = VertexForName(name1);
@@ -83,7 +85,28 @@ namespace Graph
             return AddEdge(v0, v1, weight);
         }
 
-        public bool Adjacent(Vertex v0, Vertex v1)
+        public void AddEdges(IEnumerable<EdgeBase<TVertex>> newEdges)
+        {
+            foreach(var e in newEdges)
+            {
+                AddEdge(e);
+            }
+        }
+
+        public Grapher<TNewVertex> ConvertVertices<TNewVertex>(Func<TVertex, TNewVertex> factory)
+            where TNewVertex : VertexBase
+        {
+            var convertedGraph = new Grapher<TNewVertex>();
+
+            var vertices = this.Vertices.ToDictionary(v => v.Name, v => factory(v));
+
+            convertedGraph.AddVertices(vertices.Values);
+            convertedGraph.AddEdges(this.Edges.Select(e => new EdgeBase<TNewVertex>(vertices[e.V0.Name], vertices[e.V1.Name], e.Weight)));
+
+            return convertedGraph;
+        }
+
+        public bool Adjacent(TVertex v0, TVertex v1)
         {
             return Adjacent(v0.Name, v1.Name);
         }
@@ -105,7 +128,7 @@ namespace Graph
             }
         }
 
-        public IEnumerable<Vertex> Neighbours(Vertex vertex)
+        public IEnumerable<TVertex> Neighbours(TVertex vertex)
         {
             if (IsDirected)
             {
@@ -122,7 +145,7 @@ namespace Graph
             }
         }
 
-        public int Degree(Vertex vertex)
+        public int Degree(TVertex vertex)
         {
             return Neighbours(vertex).Count();
         }
@@ -143,26 +166,26 @@ namespace Graph
             return edges.Count == (n * (n - 1)) / 2;
         }
 
-        public Grapher Union(Grapher other)
-        {
-            var A = this.AdjacencyMatrix();
-            var B = other.AdjacencyMatrix();
-            return A.Union(B).AsGraph(IsDirected);
-        }
+        //public Grapher<TVertex> Union(Grapher<TVertex> other)
+        //{
+        //    var A = this.AdjacencyMatrix();
+        //    var B = other.AdjacencyMatrix();
+        //    return A.Union(B).AsGraph(IsDirected);
+        //}
+        //
+        //public Grapher<TVertex> Complement()
+        //{
+        //    return this.AdjacencyMatrix().Complement().AsGraph(IsDirected);
+        //}
 
-        public Grapher Complement()
+        public AdjacencyMatrix<TVertex> AdjacencyMatrix()
         {
-            return this.AdjacencyMatrix().Complement().AsGraph(IsDirected);
-        }
-
-        public AdjacencyMatrix AdjacencyMatrix()
-        {
-            return new AdjacencyMatrix(this);
+            return new AdjacencyMatrix<TVertex>(this);
         }
 
         public bool HasCycle()
         {
-            var clone = new Grapher(this);
+            var clone = new Grapher<TVertex>(this);
 
             while (clone.RemoveLeafs() > 0) { /* nothing to do */ }
 
@@ -193,25 +216,25 @@ namespace Graph
             return vertices.Remove(name);
         }
 
-        public bool RemoveVertex(Vertex vertex)
+        public bool RemoveVertex(TVertex vertex)
         {
             return RemoveVertex(vertex.Name);
         }
 
-        public bool RemoveEdge(Edge edge)
+        public bool RemoveEdge(EdgeBase<TVertex> edge)
         {
             return edges.Remove(edge);
         }
 
-        public MultiValueDictionary<int, Vertex> DepthFirstSearch(Action<Vertex> processVertexPreorder)
+        public MultiValueDictionary<int, TVertex> DepthFirstSearch(Action<TVertex> processVertexPreorder)
         {
             return DepthFirstSearch(AnyVertex(), processVertexPreorder);
         }
 
-        public MultiValueDictionary<int, Vertex> DepthFirstSearch(Vertex start, Action<Vertex> processVertexPreorder)
+        public MultiValueDictionary<int, TVertex> DepthFirstSearch(TVertex start, Action<TVertex> processVertexPreorder)
         {
-            var components = new MultiValueDictionary<int, Vertex>();
-            var visited = new HashSet<Vertex>();
+            var components = new MultiValueDictionary<int, TVertex>();
+            var visited = new HashSet<TVertex>();
 
             visited.Add(start);
             processVertexPreorder(start);
@@ -222,7 +245,7 @@ namespace Graph
                 if (!visited.Contains(n))
                 {
                     c++;
-                    var stack = new Stack<Vertex>();
+                    var stack = new Stack<TVertex>();
                     stack.Push(n);
 
                     // visit(n)
@@ -245,22 +268,22 @@ namespace Graph
             return components;
         }
 
-        public MultiValueDictionary<int, Vertex> BreadthFirstSearch(Vertex start, Action<Vertex> processVertex = null)
+        public MultiValueDictionary<int, TVertex> BreadthFirstSearch(TVertex start, Action<TVertex> processVertex = null)
         {
             if (processVertex == null)
-                processVertex = _ => {};
+                processVertex = _ => { };
 
-            var components = new MultiValueDictionary<int, Vertex>();
-            var visited = new HashSet<Vertex>();
+            var components = new MultiValueDictionary<int, TVertex>();
+            var visited = new HashSet<TVertex>();
             visited.Add(start);
 
             int c = -1;
             foreach (var v in Neighbours(start))
-	        {
+            {
                 if (!visited.Contains(v))
                 {
                     c++;
-                    var queue = new Queue<Vertex>();
+                    var queue = new Queue<TVertex>();
                     queue.Enqueue(v);
 
                     while (queue.Count > 0)
@@ -284,43 +307,9 @@ namespace Graph
                         }
                     }
                 }
-	        }
-
-            return components;
-        }
-
-        public static Grapher FromFile(string path = "GraphDef.txt")
-        {
-            var G = new Grapher();
-            var verticiesLookup = new Dictionary<string, Vertex>();
-
-            foreach (var line in System.IO.File.ReadAllLines(path))
-            {
-                if (string.IsNullOrEmpty(line))
-                    continue;
-
-                string[] split = line.Split(' ');
-
-                if (split.Length == 1)
-                {
-                    var v = new Vertex(split[0]);
-                    verticiesLookup.Add(line, v);
-                    G.AddVertex(v);
-                }
-                else if (split.Length == 2)
-                {
-                    var v0 = verticiesLookup[split[0]];
-                    var v1 = verticiesLookup[split[1]];
-
-                    G.AddEdge(v0, v1);
-                }
-                else
-                {
-                    throw new Exception(string.Format("Invalid GraphDef format in line: '{0}'", line));
-                }
             }
 
-            return G;
+            return components;
         }
 
         public string AsDotLanguage()
@@ -344,12 +333,12 @@ namespace Graph
         }
     }
 
-    public class Vertex
+    public class VertexBase
     {
         public readonly string Name;
         public readonly string Data;
 
-        public Vertex(string name, string data = null)
+        public VertexBase(string name, string data = null)
         {
             this.Name = name;
             this.Data = data;
@@ -359,15 +348,18 @@ namespace Graph
         {
             return Name;
         }
+
+        public static void Test() { }
     }
 
-    public class Edge
+    public class EdgeBase<TVertex>
+        where TVertex : VertexBase
     {
-        public readonly Vertex V0;
-        public readonly Vertex V1;
+        public readonly TVertex V0;
+        public readonly TVertex V1;
         public readonly double Weight;
 
-        public Edge(Vertex v0, Vertex v1, double weight = 0)
+        public EdgeBase(TVertex v0, TVertex v1, double weight = 0)
         {
             this.V0 = v0;
             this.V1 = v1;

@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
-    public class AdjacencyMatrix
+    public class AdjacencyMatrix<TVertex>
+        where TVertex : VertexBase
     {
         private readonly string[] names;
         private readonly bool[,] matrix;
@@ -25,9 +26,9 @@ namespace Graph
             this.matrix = matrix;
         }
 
-        public AdjacencyMatrix(Grapher g)
+        public AdjacencyMatrix(Grapher<TVertex> g)
         {
-            var V = new List<Vertex>(g.Vertices);
+            var V = new List<TVertex>(g.Vertices);
             int n = V.Count;
 
             this.names = new string[n];
@@ -49,7 +50,7 @@ namespace Graph
             return names[index];
         }
 
-        public static AdjacencyMatrix CreateCompleteMatrix(int size)
+        public static AdjacencyMatrix<TVertex> CreateCompleteMatrix(int size)
         {
             bool[,] matrix = new bool[size, size];
             string[] names = new string[size];
@@ -71,15 +72,15 @@ namespace Graph
             }
 
 
-            return new AdjacencyMatrix(names, matrix);
+            return new AdjacencyMatrix<TVertex>(names, matrix);
         }
 
-        public Grapher AsGraphUndirected()
+        public Grapher<VertexBase> AsGraphUndirected()
         {
-            var newGraph = new Grapher();
+            var newGraph = new Grapher<VertexBase>();
 
-            var vertices = this.names.Select(n => new Vertex(n)).ToArray();
-            newGraph.AddVerticies(vertices);
+            var vertices = this.names.Select(n => new VertexBase(n)).ToArray();
+            newGraph.AddVertices(vertices);
 
             /* 
              * We iterate the matrix like that:
@@ -102,17 +103,17 @@ namespace Graph
             return newGraph;
         }
 
-        public Grapher AsGraph(bool directed = false)
+        public Grapher<VertexBase> AsGraph(bool directed = false)
         {
             return directed ? AsGraphDirected() : AsGraphUndirected();
         }
 
-        public Grapher AsGraphDirected()
+        public Grapher<VertexBase> AsGraphDirected()
         {
-            var newGraph = new Grapher(directed: true);
+            var newGraph = new Grapher<VertexBase>(directed: true);
 
-            var vertices = this.names.Select(n => new Vertex(n)).ToArray();
-            newGraph.AddVerticies(vertices);
+            var vertices = this.names.Select(n => new VertexBase(n)).ToArray();
+            newGraph.AddVertices(vertices);
 
             /* 
              * We iterate the matrix like that:
@@ -135,7 +136,7 @@ namespace Graph
             return newGraph;
         }
 
-        public AdjacencyMatrix Union(AdjacencyMatrix other)
+        public AdjacencyMatrix<TVertex> Union(AdjacencyMatrix<TVertex> other)
         {
             int s0 = this.Size;
             int s1 = other.Size;
@@ -163,7 +164,7 @@ namespace Graph
                 }
             }
 
-            return new AdjacencyMatrix(newNames.ToArray(), newMatrix);
+            return new AdjacencyMatrix<TVertex>(newNames.ToArray(), newMatrix);
         }
 
         private string[] UnionNames(string[] A, string[] B)
@@ -186,7 +187,7 @@ namespace Graph
         }
 
 
-        public AdjacencyMatrix Complement()
+        public AdjacencyMatrix<TVertex> Complement()
         {
             int s = this.Size;
             bool[,] newMatrix = new bool[s, s];
@@ -199,7 +200,7 @@ namespace Graph
                 }
             }
 
-            return new AdjacencyMatrix(this.names, newMatrix);
+            return new AdjacencyMatrix<TVertex>(this.names, newMatrix);
         }
 
         public string ToPrettyString()
