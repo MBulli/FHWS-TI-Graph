@@ -29,5 +29,22 @@ namespace Graph
             foreach (var item in items)
                 stack.Push(item);
         }
+
+        public static IDictionary<T, C5.IPriorityQueueHandle<T>> AddRange<T>(this C5.IPriorityQueue<T> heap, IEnumerable<T> elements)
+        {
+            var dict = new Dictionary<T, C5.IPriorityQueueHandle<T>>();
+
+            foreach (var item in elements)
+            {
+                C5.IPriorityQueueHandle<T> handle = null;
+
+                if (heap.Add(ref handle, item))
+                {
+                    dict[item] = handle;
+                }
+            }
+
+            return dict;
+        }
     }
 }

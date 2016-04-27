@@ -9,27 +9,117 @@ namespace Graph
 {
     static class DijkstraAlgorithm
     {
-        public static List<VertexBase> FindShortestPath(Grapher<VertexBase> graph)
+        public static List<VertexBase> FindShortestPath(Grapher<VertexBase> graph, VertexBase startVertex, VertexBase endVertex)
         {
-            var Q = new IntervalHeap<DijkstraVertex>(new DijkstraVertexComparer());
-            
+            Grapher<DijkstraVertex> G = ConvertToDijkstraGraph(graph);
+            DijkstraVertex s = G.VertexForName(startVertex.Name);
+            DijkstraVertex n = G.VertexForName(endVertex.Name);
+
+            // Active set
+            var A = new IntervalHeap<DijkstraVertex>(new DijkstraVertexComparer());
+            // Non-active set
+            var N = new IntervalHeap<DijkstraVertex>(new DijkstraVertexComparer());
+
+            var predecessorList = new Dictionary<DijkstraVertex, DijkstraVertex>();
+
+            foreach(var p in G.Vertices)
+            {
+                predecessorList.Add(p,null);
+            }
+
+            // Init
+            s.Distance = 0;
+            N.Add(s);
+
+            var handleMap = A.AddRange(G.Vertices);
+
+            for (int i = 0; i < A.Count; i++)
+            {
+                var v = A.ElementAt(i);
+                if (v.Distance != double.PositiveInfinity)
+                {
+                    var predecessor = A.FindMin();
+                    double min = predecessor.Distance;
+                    predecessorList[v] = predecessor; //Add actual predecessor to v with shortest path to v
+                    v.Distance = min;
+                    if (!N.Contains(v))
+                    {
+                        N.Add(v);
+                    }
+
+
+                    foreach (var d in N)
+                    {
+                        if(A.Contains(d))
+                        {
+                            A.Delete(handleMap[d]);
+                            handleMap.Remove(d);
+                        }
+                    }
+
+                    foreach (var e in G.Edges)
+                    {
+                        if (N.Contains(e.V1) && A.Contains(e.V0))
+                        {
+                            e.V0.Distance = Math.Min(e.V0.Distance, e.V1.Distance + e.Weight);
+
+                        }
+                        else if (N.Contains(e.V0) && A.Contains(e.V1))
+                        {
+                            e.V1.Distance = Math.Min(e.V1.Distance, e.V0.Distance + e.Weight);
+                        }
+                    }
+                }
+            }
+
+            List<VertexBase> shortestPath = new List<VertexBase>();
+            var actualPredecessor = predecessorList[n];
+
+            if (predecessorList[n].Name == s.Name) // Path only has EndVertex and StartVertex -> finished!
+            {
+                shortestPath.Add(n);
+                shortestPath.Add(s);
+
+                return shortestPath;
+            }
+            else
+            {
+                shortestPath.Add(n);
+                // Find shortest path to endVertex
+                while (actualPredecessor.Name != s.Name)
+                {
+                    if (predecessorList[actualPredecessor].Name == s.Name) // Predecessor of actual predecessor is s -> finished!
+                    {
+                        shortestPath.Add(actualPredecessor);
+                        shortestPath.Add(s);
+
+                        return shortestPath;
+                    }
+                    else
+                    {
+                        shortestPath.Add(actualPredecessor);
+                    }
+
+                    actualPredecessor = predecessorList[actualPredecessor];
+                }
+            }
 
             return null;
         }
 
         private static Grapher<DijkstraVertex> ConvertToDijkstraGraph(Grapher<VertexBase> sourceGraph)
         {
-            return sourceGraph.ConvertVertices(oldVertex => new DijkstraVertex(oldVertex.Name, oldVertex.Data, null));
+            return sourceGraph.ConvertVertices(oldVertex => new DijkstraVertex(oldVertex.Name, oldVertex.Data, double.PositiveInfinity));
         }
 
         class DijkstraVertex : VertexBase
         {
-            public int? Priority;
+            public double Distance;
 
-            public DijkstraVertex(string name, string data, int? priority)
+            public DijkstraVertex(string name, string data, double distance)
                 : base(name, data)
             {
-                this.Priority = priority;
+                this.Distance = distance;
             }
         }
 
@@ -37,14 +127,7 @@ namespace Graph
         {
             public int Compare(DijkstraVertex x, DijkstraVertex y)
             {
-                if (x.Priority == null && y.Priority == null)
-                    return 0;
-                else if (x.Priority ==  null)
-                    return -1;
-                else if (y.Priority == null)
-                    return 1;
-                else
-                    return x.Priority.Value.CompareTo(y.Priority.Value);
+                return x.Distance.CompareTo(y.Distance);
             }
         }
     }

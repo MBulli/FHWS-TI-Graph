@@ -93,6 +93,13 @@ namespace Graph
             }
         }
 
+        public IEnumerable<EdgeBase<TVertex>> GetEdge(TVertex v0, TVertex v1)
+        {
+            return from e in Edges
+                   where (e.V0 == v0 && e.V1 == v1) || (e.V0 == v1 && e.V1 == v0)
+                   select e;
+        }
+
         public Grapher<TNewVertex> ConvertVertices<TNewVertex>(Func<TVertex, TNewVertex> factory)
             where TNewVertex : VertexBase
         {

@@ -25,10 +25,15 @@ namespace Graph
                 Assert.IsTrue(result.HasEulerPath);
             }
 
-            if(true)
+            if(false)
             {
                 var result = A(@"TestFiles\keinKreis.txt");
                 Assert.IsFalse(result.HasCycle);
+            }
+
+            if(true)
+            {
+                var result = A(@"TestFiles\Dijkstra.txt");
             }
 
         }
@@ -44,9 +49,21 @@ namespace Graph
             result.HasEulerPath = EulerFinderAlgorithm.FindEulerPath(graph);
             result.HasCycle = CycleFinderAlgorithm.FindCycle(graph);
 
+            var startVertice = graph.Vertices.ElementAt(0);
+            var endVertice = graph.Vertices.ElementAt(4);
+
+            result.shortestPath = DijkstraAlgorithm.FindShortestPath(graph, graph.Vertices.ElementAt(0), graph.Vertices.ElementAt(4));
+
             Debug.WriteLine("Eulerkreis: " + result.HasEulerCycle);
             Debug.WriteLine("Eulerpfad: " + result.HasEulerPath);
             Debug.WriteLine("Kreis: " + result.HasCycle);
+
+            Debug.WriteLine("Shortest Dijkstra Path From " + startVertice.Name + "to " + endVertice.Name);
+
+            foreach (var v in result.shortestPath)
+            {
+                Debug.Write(v.Name + " ");
+            }
 
             return result;
         }
@@ -57,5 +74,6 @@ namespace Graph
         public bool HasEulerCycle;
         public bool HasEulerPath;
         public bool HasCycle;
+        public List<VertexBase> shortestPath;
     }
 }
