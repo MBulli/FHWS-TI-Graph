@@ -57,6 +57,8 @@ namespace Graph
         {
             textbox?.AppendText(message);
             textbox?.AppendText(Environment.NewLine);
+
+            textbox?.ScrollToEnd();
         }
     }
 }

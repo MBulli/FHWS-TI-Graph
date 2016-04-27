@@ -29,6 +29,7 @@
         <TextBox x:Name="logTexbox"
                  Grid.Row="2"
                  IsReadOnly="True"
-                 FontFamily="Consolas" />
+                 FontFamily="Consolas"
+                 ScrollViewer.VerticalScrollBarVisibility="Auto" />
     </Grid>
 </Window>
