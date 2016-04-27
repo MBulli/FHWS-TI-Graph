@@ -51,13 +51,13 @@ namespace Graph
         public override void Write(string message)
         {
             textbox?.AppendText(message);
+            textbox?.ScrollToEnd();
         }
 
         public override void WriteLine(string message)
         {
             textbox?.AppendText(message);
             textbox?.AppendText(Environment.NewLine);
-
             textbox?.ScrollToEnd();
         }
     }
