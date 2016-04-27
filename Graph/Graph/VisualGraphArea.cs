@@ -31,6 +31,7 @@ namespace Graph
             base.GenerateGraph(biGraph);
 
             ShowAllEdgesArrows(g.IsDirected);
+            SetVerticesDrag(true);
         }
 
         private QuickGraph.BidirectionalGraph<VisualVertex, VisualEdge> ConvertGraph(Grapher<VertexBase> graph)
