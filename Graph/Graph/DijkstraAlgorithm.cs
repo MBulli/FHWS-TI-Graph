@@ -1,6 +1,7 @@
 ﻿using C5;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,29 +33,28 @@ namespace Graph
             N.Add(s);
 
             var handleMap = A.AddRange(G.Vertices);
-
             for (int i = 0; i < A.Count; i++)
             {
                 var v = A.ElementAt(i);
                 if (v.Distance != double.PositiveInfinity)
                 {
-                    var predecessor = A.FindMin();
+                    var predecessor = GetMinElement(A);
                     double min = predecessor.Distance;
                     predecessorList[v] = predecessor; //Add actual predecessor to v with shortest path to v
                     v.Distance = min;
-                    if (!N.Contains(v))
+
+                    if (!N.Contains(v)) // Seems to be wrong, each v with v.dist == min  must be added
                     {
                         N.Add(v);
                     }
 
 
-                    foreach (var d in N)
+                    foreach (var d in N) // N needs to be cleared after each iteration
                     {
-                        if(A.Contains(d))
-                        {
+                            Debug.WriteLine("Node finished: " + d.Name + ", Distance:" + d.Distance);
                             A.Delete(handleMap[d]);
                             handleMap.Remove(d);
-                        }
+                            i--;
                     }
 
                     foreach (var e in G.Edges)
@@ -105,6 +105,21 @@ namespace Graph
             }
 
             return null;
+        }
+
+        private static DijkstraVertex GetMinElement(C5.IPriorityQueue<DijkstraVertex> heap)
+        {
+            DijkstraVertex vertex = new DijkstraVertex("", null, double.PositiveInfinity);
+
+            foreach (var item in heap)
+            {
+                if(item.Distance < vertex.Distance)
+                {
+                    vertex = item;
+                }
+            }
+
+            return vertex;
         }
 
         private static Grapher<DijkstraVertex> ConvertToDijkstraGraph(Grapher<VertexBase> sourceGraph)
