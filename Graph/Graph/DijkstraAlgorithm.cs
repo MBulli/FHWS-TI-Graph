@@ -17,11 +17,13 @@ namespace Graph
             DijkstraVertex n = G.VertexForName(endVertex.Name);
 
             // Active set
-            var A = new IntervalHeap<DijkstraVertex>(new DijkstraVertexComparer());
+            var A = new List<DijkstraVertex>();
+
             // Non-active set
-            var N = new IntervalHeap<DijkstraVertex>(new DijkstraVertexComparer());
+            var N = new List<DijkstraVertex>();
 
             var predecessorList = new Dictionary<DijkstraVertex, DijkstraVertex>();
+            var lastVertex = s;
 
             foreach(var p in G.Vertices)
             {
@@ -30,31 +32,30 @@ namespace Graph
 
             // Init
             s.Distance = 0;
-            N.Add(s);
+            A.AddRange(G.Vertices);
 
-            var handleMap = A.AddRange(G.Vertices);
-            for (int i = 0; i < A.Count; i++)
+            //var handleMap = A.AddRange(G.Vertices);
+            for (int i = 0; i < A.Count;)
             {
                 var v = A.ElementAt(i);
                 if (v.Distance != double.PositiveInfinity)
                 {
-                    var predecessor = GetMinElement(A);
-                    double min = predecessor.Distance;
-                    predecessorList[v] = predecessor; //Add actual predecessor to v with shortest path to v
-                    v.Distance = min;
+                    double min = GetMinElement(A).Distance;
 
-                    if (!N.Contains(v)) // Seems to be wrong, each v with v.dist == min  must be added
+                    for(int j = 0; j < A.Count; j++)
                     {
-                        N.Add(v);
+                        if(A.ElementAt(j).Distance == min)
+                        {
+                            N.Add(A.ElementAt(j));
+                            i++;
+                        }
                     }
-
 
                     foreach (var d in N) // N needs to be cleared after each iteration
                     {
-                            Debug.WriteLine("Node finished: " + d.Name + ", Distance:" + d.Distance);
-                            A.Delete(handleMap[d]);
-                            handleMap.Remove(d);
-                            i--;
+                        Debug.WriteLine("Node finished: " + d.Name + ", Distance:" + d.Distance);
+                        A.Remove(d);
+                        i--;
                     }
 
                     foreach (var e in G.Edges)
@@ -62,13 +63,18 @@ namespace Graph
                         if (N.Contains(e.V1) && A.Contains(e.V0))
                         {
                             e.V0.Distance = Math.Min(e.V0.Distance, e.V1.Distance + e.Weight);
+                            predecessorList[e.V0] = e.V1; //Add actual predecessor to e.v0
+                            Debug.WriteLine("New Distance for " + e.V0.Name + ": " + e.V0.Distance);
 
                         }
                         else if (N.Contains(e.V0) && A.Contains(e.V1))
                         {
                             e.V1.Distance = Math.Min(e.V1.Distance, e.V0.Distance + e.Weight);
+                            predecessorList[e.V1] = e.V0; //Add actual predecessor to e.v1
+                            Debug.WriteLine("New Distance for " + e.V1.Name + ": " + e.V1.Distance);
                         }
                     }
+                    N.Clear();
                 }
             }
 
@@ -85,6 +91,7 @@ namespace Graph
             else
             {
                 shortestPath.Add(n);
+
                 // Find shortest path to endVertex
                 while (actualPredecessor.Name != s.Name)
                 {
@@ -107,7 +114,7 @@ namespace Graph
             return null;
         }
 
-        private static DijkstraVertex GetMinElement(C5.IPriorityQueue<DijkstraVertex> heap)
+        private static DijkstraVertex GetMinElement(List<DijkstraVertex> heap)
         {
             DijkstraVertex vertex = new DijkstraVertex("", null, double.PositiveInfinity);
 

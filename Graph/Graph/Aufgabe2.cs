@@ -50,15 +50,17 @@ namespace Graph
             result.HasCycle = CycleFinderAlgorithm.FindCycle(graph);
 
             var startVertice = graph.Vertices.ElementAt(0);
-            var endVertice = graph.Vertices.ElementAt(4);
+            var endVertice = graph.Vertices.ElementAt(6);
 
-            result.shortestPath = DijkstraAlgorithm.FindShortestPath(graph, graph.Vertices.ElementAt(0), graph.Vertices.ElementAt(4));
+            result.shortestPath = DijkstraAlgorithm.FindShortestPath(graph, startVertice, endVertice);
 
             Debug.WriteLine("Eulerkreis: " + result.HasEulerCycle);
             Debug.WriteLine("Eulerpfad: " + result.HasEulerPath);
             Debug.WriteLine("Kreis: " + result.HasCycle);
 
-            Debug.WriteLine("Shortest Dijkstra Path From " + startVertice.Name + "to " + endVertice.Name);
+            Debug.WriteLine("Shortest Dijkstra Path From " + startVertice.Name + " to " + endVertice.Name);
+
+            result.shortestPath.Reverse();
 
             foreach (var v in result.shortestPath)
             {
