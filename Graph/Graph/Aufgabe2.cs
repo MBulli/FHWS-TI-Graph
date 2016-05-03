@@ -33,7 +33,7 @@ namespace Graph
 
             if(true)
             {
-                var result = A(@"TestFiles\Dijkstra.txt");
+                var result = A(@"TestFiles\VielGewicht.txt");
             }
 
         }
@@ -49,8 +49,8 @@ namespace Graph
             result.HasEulerPath = EulerFinderAlgorithm.FindEulerPath(graph);
             result.HasCycle = CycleFinderAlgorithm.FindCycle(graph);
 
-            var startVertice = graph.Vertices.ElementAt(0);
-            var endVertice = graph.Vertices.ElementAt(6);
+            var startVertice = graph["I"];
+            var endVertice = graph["F"];
 
             result.shortestPath = DijkstraAlgorithm.FindShortestPath(graph, startVertice, endVertice);
 
@@ -61,11 +61,19 @@ namespace Graph
             Debug.WriteLine("Shortest Dijkstra Path From " + startVertice.Name + " to " + endVertice.Name);
 
             result.shortestPath.Reverse();
-
-            foreach (var v in result.shortestPath)
+            if(result.shortestPath.Count == 0)
             {
-                Debug.Write(v.Name + " ");
+                Debug.WriteLine("Error!");
             }
+            else
+            {
+                foreach (var v in result.shortestPath)
+                {
+                    Debug.Write(v.Name + " ");
+                }
+            }
+
+            
 
             return result;
         }

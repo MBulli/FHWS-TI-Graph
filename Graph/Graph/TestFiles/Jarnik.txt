@@ -1,0 +1,30 @@
+﻿# Example taken from Graph Algorithm course
+knoten A
+knoten B
+knoten C
+knoten D
+knoten E
+knoten F
+knoten G
+knoten H
+knoten I
+knoten J
+
+
+kante A B 3
+kante A C 2
+kante A D 4
+kante B E 4
+kante B F 1 
+kante C F 1
+kante C G 9
+kante C H 4
+kante C D 1
+kante D I 1
+kante D H 3
+kante E G 3
+kante G J 1
+kante G H 1
+kante H I 1
+kante H J 2
+kante I J 3

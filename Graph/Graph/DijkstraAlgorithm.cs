@@ -34,13 +34,22 @@ namespace Graph
             s.Distance = 0;
             A.AddRange(G.Vertices);
 
+            A = A.OrderBy(x => x.Distance).ToList();
+
+            if (s.Name == n.Name)
+            {
+                Debug.WriteLine("Start and endnote is equal, returning!");
+                return new List<VertexBase>();
+            }
+
             //var handleMap = A.AddRange(G.Vertices);
             for (int i = 0; i < A.Count;)
             {
                 var v = A.ElementAt(i);
+                
                 if (v.Distance != double.PositiveInfinity)
                 {
-                    double min = GetMinElement(A).Distance;
+                    double min = A[0].Distance;
 
                     for(int j = 0; j < A.Count; j++)
                     {
@@ -62,20 +71,30 @@ namespace Graph
                     {
                         if (N.Contains(e.V1) && A.Contains(e.V0))
                         {
-                            e.V0.Distance = Math.Min(e.V0.Distance, e.V1.Distance + e.Weight);
-                            predecessorList[e.V0] = e.V1; //Add actual predecessor to e.v0
+                            var d = e.V1.Distance + e.Weight;
+                            if(d < e.V0.Distance)
+                            {
+                                e.V0.Distance = d;
+                                predecessorList[e.V0] = e.V1; //Add actual predecessor to e.v0
+                            }                            
                             Debug.WriteLine("New Distance for " + e.V0.Name + ": " + e.V0.Distance);
 
                         }
                         else if (N.Contains(e.V0) && A.Contains(e.V1))
                         {
-                            e.V1.Distance = Math.Min(e.V1.Distance, e.V0.Distance + e.Weight);
-                            predecessorList[e.V1] = e.V0; //Add actual predecessor to e.v1
+                            var d = e.V0.Distance + e.Weight;
+                            if (d < e.V1.Distance)
+                            {
+                                e.V1.Distance = d;
+                                predecessorList[e.V1] = e.V0; //Add actual predecessor to e.v0
+                            }
                             Debug.WriteLine("New Distance for " + e.V1.Name + ": " + e.V1.Distance);
                         }
                     }
+                    A = A.OrderBy(x => x.Distance).ToList();
                     N.Clear();
                 }
+                
             }
 
             List<VertexBase> shortestPath = new List<VertexBase>();
