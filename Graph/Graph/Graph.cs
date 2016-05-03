@@ -100,6 +100,13 @@ namespace Graph
                    select e;
         }
 
+        public IEnumerable<EdgeBase<TVertex>> GetEdge(string v0, string v1)
+        {
+            return from e in Edges
+                   where (e.V0.Name == v0 && e.V1.Name == v1) || (e.V0.Name == v1 && e.V1.Name == v0)
+                   select e;
+        }
+
         public Grapher<TNewVertex> ConvertVertices<TNewVertex>(Func<TVertex, TNewVertex> factory)
             where TNewVertex : VertexBase
         {

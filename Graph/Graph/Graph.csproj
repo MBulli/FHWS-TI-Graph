@@ -99,7 +99,9 @@
     <Compile Include="Extension.cs" />
     <Compile Include="Graph.cs" />
     <Compile Include="CycleFinderAlgorithm.cs" />
+    <Compile Include="JarnikAlgorithm.cs" />
     <Compile Include="VisualGraphArea.cs" />
+    <Compile Include="WeightedAdjacencyMatrix.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -150,6 +152,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\Euler2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Jarnik.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\KeinKreis.txt">
