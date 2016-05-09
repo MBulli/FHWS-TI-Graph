@@ -38,7 +38,7 @@ namespace Graph
         {
             var result = new QuickGraph.BidirectionalGraph<VisualVertex, VisualEdge>();
 
-            var vertices = graph.Vertices.ToDictionary(v => v.Name, v => new VisualVertex(v.Name, v.Data));
+            var vertices = graph.Vertices.ToDictionary(v => v.Name, v => new VisualVertex(v.Name, v.Data, v.Color));
 
             result.AddVertexRange(vertices.Values);
             result.AddEdgeRange(graph.Edges.Select(e => new VisualEdge(vertices[e.V0.Name], vertices[e.V1.Name], e.Weight)));
@@ -56,11 +56,13 @@ namespace Graph
     {
         public readonly string Name;
         public readonly string Data;
+        public readonly int Color;
 
-        public VisualVertex(string name, string data)
+        public VisualVertex(string name, string data, int color)
         {
             this.Name = name;
             this.Data = data;
+            this.Color = color;
         }
 
         public override string ToString()
@@ -83,9 +85,33 @@ namespace Graph
 
     class VisualGraphControlFactory : GraphControlFactory
     {
+        private static SolidColorBrush[] colorPalette = new SolidColorBrush[]
+        {
+            Brushes.Blue, Brushes.Red, Brushes.Yellow, Brushes.Green
+        };
+
         public VisualGraphControlFactory(GraphAreaBase graphArea)
             : base(graphArea)
         {
+        }
+
+        public override VertexControl CreateVertexControl(object vertexData)
+        {
+            var v = vertexData as VisualVertex;
+
+            if (v != null)
+            {
+                var color = colorPalette[v.Color];
+
+                return new VertexControl(vertexData)
+                {
+                    Background = color
+                };
+            }
+            else
+            {
+                return new VertexControl(vertexData);
+            }
         }
 
         public override EdgeControl CreateEdgeControl(VertexControl source, VertexControl target, object edge, bool showLabels = false, bool showArrows = true, Visibility visibility = Visibility.Visible)

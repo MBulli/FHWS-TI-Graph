@@ -351,19 +351,19 @@ namespace Graph
     {
         public readonly string Name;
         public readonly string Data;
+        public readonly int Color;
 
-        public VertexBase(string name, string data = null)
+        public VertexBase(string name, string data = null, int color = 0)
         {
             this.Name = name;
             this.Data = data;
+            this.Color = color;
         }
 
         public override string ToString()
         {
             return Name;
         }
-
-        public static void Test() { }
     }
 
     public class EdgeBase<TVertex>
