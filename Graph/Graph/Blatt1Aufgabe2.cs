@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
-    class Aufgabe2
+    class Blatt1Aufgabe2
     {
         public static void A()
         {

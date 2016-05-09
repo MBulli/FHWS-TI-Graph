@@ -34,7 +34,7 @@ namespace Graph
             var graph = FileParser.Parse(App.FilePath);
             graphArea.GenerateGraph(graph); 
 
-            Aufgabe2.A();
+            Blatt1Aufgabe2.A();
             zoomControl.ZoomToFill();
         }
     }
