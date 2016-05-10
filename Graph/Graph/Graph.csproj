@@ -94,6 +94,8 @@
     <Compile Include="AdjacencyMatrix.cs" />
     <Compile Include="Assert.cs" />
     <Compile Include="Blatt1Aufgabe2.cs" />
+    <Compile Include="Blatt2Aufgabe1.cs" />
+    <Compile Include="GreedyColAlgorithm.cs" />
     <Compile Include="DijkstraAlgorithm.cs" />
     <Compile Include="EulerFinderAlgorithm.cs" />
     <Compile Include="Extension.cs" />

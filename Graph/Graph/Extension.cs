@@ -24,6 +24,16 @@ namespace Graph
             }
         }
 
+        public static T MaxOrDefault<T>(this IEnumerable<T> e, T defaultValue = default(T))
+        {
+            return e.Count() != 0 ? e.Max() : defaultValue;
+        }
+
+        public static T MinOrDefault<T>(this IEnumerable<T> e, T defaultValue = default(T))
+        {
+            return e.Count() != 0 ? e.Min() : defaultValue;
+        }
+
         public static void Push<T>(this Stack<T> stack, IEnumerable<T> items)
         {
             foreach (var item in items)

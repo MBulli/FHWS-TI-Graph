@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Graph
 {
-    public class Grapher<TVertex>
+    public class Grapher<TVertex> : ICloneable
         where TVertex : VertexBase
     {
         protected readonly Dictionary<string, TVertex> vertices = new Dictionary<string, TVertex>();
@@ -345,13 +345,21 @@ namespace Graph
             sb.AppendLine("}");
             return sb.ToString();
         }
+
+
+        object ICloneable.Clone() => Clone();
+
+        public Grapher<TVertex> Clone()
+        {
+            return new Grapher<TVertex>(this);
+        }
     }
 
     public class VertexBase
     {
         public readonly string Name;
-        public readonly string Data;
-        public readonly int Color;
+        public string Data;
+        public int Color;
 
         public VertexBase(string name, string data = null, int color = 0)
         {
@@ -371,8 +379,8 @@ namespace Graph
     {
         public readonly TVertex V0;
         public readonly TVertex V1;
-        public readonly double Weight;
-        public readonly int Color;
+        public double Weight;
+        public int Color;
 
         public EdgeBase(TVertex v0, TVertex v1, double weight = 0, int color = 0)
         {

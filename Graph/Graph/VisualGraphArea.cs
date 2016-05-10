@@ -116,12 +116,12 @@ namespace Graph
         public static readonly ColorInfo[] Colors = new ColorInfo[]
         {
             // (Vertex BG, Vertex FB, Edge Stroke)
-            new ColorInfo(Brushes.LightGray, Brushes.Black, Brushes.Black),
-            new ColorInfo(Brushes.Blue,      Brushes.White, Brushes.Blue),
-            new ColorInfo(Brushes.Red,       Brushes.White, Brushes.Red),
-            new ColorInfo(Brushes.Yellow,    Brushes.Black, Brushes.Yellow),
-            new ColorInfo(Brushes.Green,     Brushes.Black, Brushes.Green),
-            new ColorInfo(Brushes.Black,     Brushes.White, Brushes.Black),
+            new ColorInfo(Brushes.SkyBlue,       Brushes.Black, Brushes.Black),
+            new ColorInfo(Brushes.PaleVioletRed, Brushes.White, Brushes.Red),
+            new ColorInfo(Brushes.Gold,          Brushes.Black, Brushes.Yellow),
+            new ColorInfo(Brushes.LightSeaGreen, Brushes.White, Brushes.Green),
+            new ColorInfo(Brushes.SteelBlue,     Brushes.White, Brushes.Blue),
+            new ColorInfo(Brushes.Black,         Brushes.White, Brushes.Black)
         };
     }
 
