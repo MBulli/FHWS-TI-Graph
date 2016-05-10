@@ -83,13 +83,43 @@ namespace Graph
         }
     }
 
+    class VertexColorPalette
+    {
+        public class ColorPair
+        {
+            public readonly SolidColorBrush Background;
+            public readonly SolidColorBrush Foreground;
+
+            public ColorPair(SolidColorBrush bg, SolidColorBrush fg)
+            {
+                Background = bg;
+                Foreground = fg;
+            }
+        }
+
+        public static int Length => Colors.Length;
+
+        public static ColorPair Get(int index)
+        {
+            if (index < 0 || index > Length)
+                throw new InvalidOperationException($"Color index {index} is out of range [0, {Length - 1}].");
+
+            return Colors[index];
+        }
+
+        public static readonly ColorPair[] Colors = new ColorPair[]
+        {
+            new ColorPair(Brushes.LightGray, Brushes.Black),
+            new ColorPair(Brushes.Blue, Brushes.White),
+            new ColorPair(Brushes.Red, Brushes.White),
+            new ColorPair(Brushes.Yellow, Brushes.Black),
+            new ColorPair(Brushes.Green, Brushes.Black),
+            new ColorPair(Brushes.Black, Brushes.White),
+        };
+    }
+
     class VisualGraphControlFactory : GraphControlFactory
     {
-        private static SolidColorBrush[] colorPalette = new SolidColorBrush[]
-        {
-            Brushes.Blue, Brushes.Red, Brushes.Yellow, Brushes.Green
-        };
-
         public VisualGraphControlFactory(GraphAreaBase graphArea)
             : base(graphArea)
         {
@@ -101,11 +131,12 @@ namespace Graph
 
             if (v != null)
             {
-                var color = colorPalette[v.Color];
+                var color = VertexColorPalette.Get(v.Color);
 
                 return new VertexControl(vertexData)
                 {
-                    Background = color
+                    Background = color.Background,
+                    Foreground = color.Foreground
                 };
             }
             else
