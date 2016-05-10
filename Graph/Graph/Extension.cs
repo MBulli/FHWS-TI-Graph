@@ -8,6 +8,8 @@ namespace Graph
 {
     static class Extension
     {
+        static Random randomGenerator = new Random();
+
         public static StringBuilder AppendLineFormat(this StringBuilder sb, string format, params object[] args)
         {
             sb.AppendFormat(format, args);
@@ -26,12 +28,12 @@ namespace Graph
 
         public static T MaxOrDefault<T>(this IEnumerable<T> e, T defaultValue = default(T))
         {
-            return e.Count() != 0 ? e.Max() : defaultValue;
+            return e.DefaultIfEmpty(defaultValue).Max();
         }
 
         public static T MinOrDefault<T>(this IEnumerable<T> e, T defaultValue = default(T))
         {
-            return e.Count() != 0 ? e.Min() : defaultValue;
+            return e.DefaultIfEmpty(defaultValue).Min();
         }
 
         public static void Push<T>(this Stack<T> stack, IEnumerable<T> items)
@@ -40,21 +42,22 @@ namespace Graph
                 stack.Push(item);
         }
 
-        public static IDictionary<T, C5.IPriorityQueueHandle<T>> AddRange<T>(this C5.IPriorityQueue<T> heap, IEnumerable<T> elements)
+        public static T RandomElement<T>(this IEnumerable<T> e)
         {
-            var dict = new Dictionary<T, C5.IPriorityQueueHandle<T>>();
+            var generator = new Random();
+            var randIndex = generator.Next(0, e.Count());
+            return e.ElementAt(randIndex);
+        }
 
-            foreach (var item in elements)
-            {
-                C5.IPriorityQueueHandle<T> handle = null;
+        public static T RandomElementOrDefault<T>(this IEnumerable<T> e, T defaultValue = default(T))
+        {
+            var count = e.Count();
 
-                if (heap.Add(ref handle, item))
-                {
-                    dict[item] = handle;
-                }
-            }
+            if (count == 0)
+                return defaultValue;
 
-            return dict;
+            var randIndex = randomGenerator.Next(0, count);
+            return e.ElementAt(randIndex);
         }
     }
 }
