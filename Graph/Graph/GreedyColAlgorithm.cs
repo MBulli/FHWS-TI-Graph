@@ -35,7 +35,7 @@ namespace Graph
             graph.Vertices.ForEach(v => v.Color = int.MaxValue);
 
             VertexBase vertex;
-            while ((vertex = graph.Vertices.FirstOrDefault(v => v.Color != int.MaxValue)) != null)
+            while ((vertex = graph.Vertices.FirstOrDefault(v => v.Color == int.MaxValue)) != null)
             {
                 var incidentColors = from i in graph.Neighbours(vertex)
                                      where i.Color != int.MaxValue
@@ -56,7 +56,7 @@ namespace Graph
             graph.Vertices.ForEach(v => v.Color = int.MaxValue);
 
             VertexBase vertex;
-            while ((vertex = graph.Vertices.Where(v => v.Color != int.MaxValue).RandomElementOrDefault()) != null)
+            while ((vertex = graph.Vertices.Where(v => v.Color == int.MaxValue).RandomElementOrDefault()) != null)
             {
                 var incidentColors = from i in graph.Neighbours(vertex)
                                      where i.Color != int.MaxValue
