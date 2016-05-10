@@ -372,12 +372,14 @@ namespace Graph
         public readonly TVertex V0;
         public readonly TVertex V1;
         public readonly double Weight;
+        public readonly int Color;
 
-        public EdgeBase(TVertex v0, TVertex v1, double weight = 0)
+        public EdgeBase(TVertex v0, TVertex v1, double weight = 0, int color = 0)
         {
             this.V0 = v0;
             this.V1 = v1;
             this.Weight = weight;
+            this.Color = color;
         }
 
         public override string ToString()

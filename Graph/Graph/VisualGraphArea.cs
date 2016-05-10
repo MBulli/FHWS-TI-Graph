@@ -73,9 +73,13 @@ namespace Graph
 
     class VisualEdge : GraphX.PCL.Common.Models.EdgeBase<VisualVertex>
     {
-        public VisualEdge(VisualVertex source, VisualVertex target, double weight = 1)
+        public readonly int Color;
+
+        public VisualEdge(VisualVertex source, VisualVertex target, double weight = 1, int color = 0)
             : base(source, target, weight)
-        { }
+        {
+            this.Color = color;
+        }
 
         public override string ToString()
         {
@@ -83,23 +87,25 @@ namespace Graph
         }
     }
 
-    class VertexColorPalette
+    class ColorPalette
     {
-        public class ColorPair
+        public class ColorInfo
         {
-            public readonly SolidColorBrush Background;
-            public readonly SolidColorBrush Foreground;
+            public readonly SolidColorBrush VertexBackground;
+            public readonly SolidColorBrush VertexForeground;
+            public readonly SolidColorBrush EdgeStroke;
 
-            public ColorPair(SolidColorBrush bg, SolidColorBrush fg)
+            public ColorInfo(SolidColorBrush bg, SolidColorBrush fg, SolidColorBrush edgeStroke)
             {
-                Background = bg;
-                Foreground = fg;
+                VertexBackground = bg;
+                VertexForeground = fg;
+                EdgeStroke = edgeStroke;
             }
         }
 
         public static int Length => Colors.Length;
 
-        public static ColorPair Get(int index)
+        public static ColorInfo Get(int index)
         {
             if (index < 0 || index > Length)
                 throw new InvalidOperationException($"Color index {index} is out of range [0, {Length - 1}].");
@@ -107,14 +113,15 @@ namespace Graph
             return Colors[index];
         }
 
-        public static readonly ColorPair[] Colors = new ColorPair[]
+        public static readonly ColorInfo[] Colors = new ColorInfo[]
         {
-            new ColorPair(Brushes.LightGray, Brushes.Black),
-            new ColorPair(Brushes.Blue, Brushes.White),
-            new ColorPair(Brushes.Red, Brushes.White),
-            new ColorPair(Brushes.Yellow, Brushes.Black),
-            new ColorPair(Brushes.Green, Brushes.Black),
-            new ColorPair(Brushes.Black, Brushes.White),
+            // (Vertex BG, Vertex FB, Edge Stroke)
+            new ColorInfo(Brushes.LightGray, Brushes.Black, Brushes.Black),
+            new ColorInfo(Brushes.Blue,      Brushes.White, Brushes.Blue),
+            new ColorInfo(Brushes.Red,       Brushes.White, Brushes.Red),
+            new ColorInfo(Brushes.Yellow,    Brushes.Black, Brushes.Yellow),
+            new ColorInfo(Brushes.Green,     Brushes.Black, Brushes.Green),
+            new ColorInfo(Brushes.Black,     Brushes.White, Brushes.Black),
         };
     }
 
@@ -131,12 +138,12 @@ namespace Graph
 
             if (v != null)
             {
-                var color = VertexColorPalette.Get(v.Color);
+                var color = ColorPalette.Get(v.Color);
 
                 return new VertexControl(vertexData)
                 {
-                    Background = color.Background,
-                    Foreground = color.Foreground
+                    Background = color.VertexBackground,
+                    Foreground = color.VertexForeground
                 };
             }
             else
@@ -147,7 +154,7 @@ namespace Graph
 
         public override EdgeControl CreateEdgeControl(VertexControl source, VertexControl target, object edge, bool showLabels = false, bool showArrows = true, Visibility visibility = Visibility.Visible)
         {
-            return new VisualEdgeControl() {       
+            var result = new VisualEdgeControl() {       
                 Source = source,
                 Target = target,
                 Edge = edge,
@@ -155,6 +162,14 @@ namespace Graph
                 ShowArrows = showArrows,
                 Visibility = visibility
             };
+
+            var e = edge as VisualEdge;
+            if (e != null)
+            {
+                result.Foreground = ColorPalette.Get(e.Color).EdgeStroke;
+            }
+
+            return result;
         }
     }
 
