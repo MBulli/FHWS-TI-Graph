@@ -159,6 +159,11 @@ namespace Graph
             }
         }
 
+        public int MaxDegree()
+        {
+            return Vertices.Max(v => Degree(v));
+        }
+
         public int Degree(TVertex vertex)
         {
             return Neighbours(vertex).Count();
