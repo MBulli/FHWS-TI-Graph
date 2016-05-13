@@ -22,7 +22,7 @@ namespace Graph
             if(args.Length > 0)
             {
                 BlattAufgabe = args[0];
-                UnterAufgabe = args[1];
+                //UnterAufgabe = args[1];
             }
         }
     }

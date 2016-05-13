@@ -38,6 +38,8 @@ namespace Graph {
                 graph = Blatt1Aufgabe2.A();
             } else if (App.BlattAufgabe == "Blatt2Aufgabe1") {
                 graph = Blatt2Aufgabe1.B();
+            } else if (App.BlattAufgabe == "Blatt2Aufgabe2"){
+                graph = Blatt2Aufgabe2.B();
             }
 
             graphArea.GenerateGraph(graph);

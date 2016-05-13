@@ -94,6 +94,7 @@
     <Compile Include="AdjacencyMatrix.cs" />
     <Compile Include="Assert.cs" />
     <Compile Include="Blatt1Aufgabe2.cs" />
+    <Compile Include="Blatt2Aufgabe2.cs" />
     <Compile Include="Blatt2Aufgabe1.cs" />
     <Compile Include="GreedyColAlgorithm.cs" />
     <Compile Include="DijkstraAlgorithm.cs" />
@@ -160,6 +161,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\KeinKreis.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\Sudoku.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\VielGewicht.txt">

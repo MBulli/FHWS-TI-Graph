@@ -1,0 +1,94 @@
+# 16 Knotendefinitionen, A bis P
+knoten A 1
+knoten B 2 
+knoten C 3
+knoten D 4
+knoten E 5
+knoten F 6
+knoten G 7
+knoten H 8
+knoten I 9
+knoten J 10
+knoten K 11
+knoten L 12
+knoten M 13
+knoten N 14
+knoten O 15
+knoten P 16
+
+
+# Kantendefinitionen 
+#A
+kante A B 1
+kante A C 1
+kante A D 1
+kante A E 1
+kante A F 1
+kante A I 1
+kante A K 1
+#B
+kante B C 1
+kante B D 1
+kante B E 1
+kante B F 1
+kante B J 1
+kante B L 1
+#C
+kante C D 1
+kante C I 1
+kante C K 1
+kante C G 1
+kante C H 1
+#D
+kante D G 1
+kante D J 1
+kante D L 1
+kante D H 1
+#E
+kante E F 1 
+kante E G 1
+kante E H 1
+kante E M 1
+kante E O 1
+#F
+kante F H 1
+kante F G 1
+kante F N 1
+kante F P 1
+#G
+kante G M 1
+kante G H 1
+kante G O 1
+#H
+kante H N 1
+kante H P 1
+#I
+kante I J 1
+kante I M 1
+kante I N 1
+kante I K 1
+kante I L 1
+#J
+kante J L 1
+kante J K 1
+kante J M 1
+kante J N 1
+#K
+kante K L 1
+kante K O 1
+kante K P 1
+#L
+kante L O 1
+kante L P 1
+#M
+kante M N 1
+kante M O 1
+kante M P 1
+#N
+kante N P 1
+kante N O 1
+#O
+kante O P 1
+
+
+
