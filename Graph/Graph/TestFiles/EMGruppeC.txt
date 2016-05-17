@@ -1,0 +1,11 @@
+﻿knoten Deutschland	
+knoten Ukraine	
+knoten Polen	
+knoten Nordirland	
+
+kante Polen        Nordirland
+kante Deutschland  Ukraine
+kante Ukraine      Nordirland
+kante Deutschland  Polen
+kante Ukraine      Polen
+kante Nordirland   Deutschland
