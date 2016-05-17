@@ -16,12 +16,12 @@ namespace Graph
 
             foreach (var v in graph.Vertices)
             {
-                var incidentColors = from i in graph.Neighbours(v)
+                var adjacentColors = from i in graph.Neighbours(v)
                                      where i.Color != int.MaxValue
                                      select i.Color;
 
-                v.Color = Enumerable.Range(0, incidentColors.MaxOrDefault() + 2)
-                                    .Except(incidentColors)
+                v.Color = Enumerable.Range(0, adjacentColors.MaxOrDefault() + 2)
+                                    .Except(adjacentColors)
                                     .Min();
             }
                        
@@ -37,12 +37,12 @@ namespace Graph
             VertexBase vertex;
             while ((vertex = graph.Vertices.FirstOrDefault(v => v.Color == int.MaxValue)) != null)
             {
-                var incidentColors = from i in graph.Neighbours(vertex)
+                var adjacentColors = from i in graph.Neighbours(vertex)
                                      where i.Color != int.MaxValue
                                      select i.Color;
 
-                vertex.Color = Enumerable.Range(0, incidentColors.MaxOrDefault() + 2)
-                                         .Except(incidentColors)
+                vertex.Color = Enumerable.Range(0, adjacentColors.MaxOrDefault() + 2)
+                                         .Except(adjacentColors)
                                          .Min();
             }
 
@@ -58,12 +58,12 @@ namespace Graph
             VertexBase vertex;
             while ((vertex = graph.Vertices.Where(v => v.Color == int.MaxValue).RandomElementOrDefault()) != null)
             {
-                var incidentColors = from i in graph.Neighbours(vertex)
+                var adjacentColors = from i in graph.Neighbours(vertex)
                                      where i.Color != int.MaxValue
                                      select i.Color;
 
-                vertex.Color = Enumerable.Range(0, incidentColors.MaxOrDefault() + 2)
-                                         .Except(incidentColors)
+                vertex.Color = Enumerable.Range(0, adjacentColors.MaxOrDefault() + 2)
+                                         .Except(adjacentColors)
                                          .Min();
             }
 

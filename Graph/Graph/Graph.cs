@@ -159,6 +159,22 @@ namespace Graph
             }
         }
 
+        public IEnumerable<EdgeBase<TVertex>> Incidents(TVertex vertex)
+        {
+            if (IsDirected)
+            {
+                return from e in Edges
+                       where e.V0 == vertex
+                       select e;
+            }
+            else
+            {
+                return from e in Edges
+                       where e.V0 == vertex || e.V1 == vertex
+                       select e;
+            }
+        }
+
         public int MaxDegree()
         {
             return Vertices.Max(v => Degree(v));
