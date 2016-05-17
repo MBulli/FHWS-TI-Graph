@@ -41,7 +41,7 @@ namespace Graph
             var vertices = graph.Vertices.ToDictionary(v => v.Name, v => new VisualVertex(v.Name, v.Data, v.Color));
 
             result.AddVertexRange(vertices.Values);
-            result.AddEdgeRange(graph.Edges.Select(e => new VisualEdge(vertices[e.V0.Name], vertices[e.V1.Name], e.Weight)));
+            result.AddEdgeRange(graph.Edges.Select(e => new VisualEdge(vertices[e.V0.Name], vertices[e.V1.Name], e.Weight, e.Color)));
 
             return result;
         }
@@ -107,7 +107,7 @@ namespace Graph
 
         public static ColorInfo Get(int index)
         {
-            if (index < 0 || index > Length)
+            if (index < 0 || index >= Length)
                 throw new InvalidOperationException($"Color index {index} is out of range [0, {Length - 1}].");
 
             return Colors[index];
@@ -121,7 +121,9 @@ namespace Graph
             new ColorInfo(Brushes.Gold,          Brushes.Black, Brushes.Yellow),
             new ColorInfo(Brushes.LightSeaGreen, Brushes.White, Brushes.Green),
             new ColorInfo(Brushes.SteelBlue,     Brushes.White, Brushes.Blue),
-            new ColorInfo(Brushes.Black,         Brushes.White, Brushes.Black)
+            new ColorInfo(Brushes.BlanchedAlmond,Brushes.White, Brushes.Magenta),
+            new ColorInfo(Brushes.Black,         Brushes.White, Brushes.Gold),
+            new ColorInfo(Brushes.Black,         Brushes.White, Brushes.SteelBlue),
         };
     }
 

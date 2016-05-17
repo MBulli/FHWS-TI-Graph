@@ -34,13 +34,16 @@ namespace Graph {
 
             Grapher<VertexBase> graph = null;
 
-            if (App.BlattAufgabe == "Blatt1Aufgabe2") {
+            if (App.BlattAufgabe == "Blatt1Aufgabe2")
                 graph = Blatt1Aufgabe2.A();
-            } else if (App.BlattAufgabe == "Blatt2Aufgabe1") {
+            else if (App.BlattAufgabe == "Blatt2Aufgabe1")
                 graph = Blatt2Aufgabe1.B();
-            } else if (App.BlattAufgabe == "Blatt2Aufgabe2"){
+            else if (App.BlattAufgabe == "Blatt2Aufgabe2")
                 graph = Blatt2Aufgabe2.B();
-            }
+            else if (App.BlattAufgabe == "Blatt2Aufgabe3")
+               graph = Blatt2Aufgabe3.A();
+            else
+                throw new Exception($"Aufgabe {App.BlattAufgabe} nicht gefunden.");
 
             graphArea.GenerateGraph(graph);
             zoomControl.ZoomToFill();

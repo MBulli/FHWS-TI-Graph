@@ -8,7 +8,7 @@ namespace Graph
 {
     class GreedyColAlgorithm
     {
-        public static Grapher<VertexBase> ColorGraph(Grapher<VertexBase> graphToColor)
+        public static Grapher<VertexBase> ColorVertices(Grapher<VertexBase> graphToColor)
         {
             var graph = graphToColor.Clone();
 
@@ -28,7 +28,7 @@ namespace Graph
             return graph;
         }
 
-        public static Grapher<VertexBase> ColorGraphVar(Grapher<VertexBase> graphToColor)
+        public static Grapher<VertexBase> ColorVerticesVar(Grapher<VertexBase> graphToColor)
         {
             var graph = graphToColor.Clone();
 
@@ -49,7 +49,7 @@ namespace Graph
             return graph;
         }
 
-        public static Grapher<VertexBase> ColorGraphVarRandom(Grapher<VertexBase> graphToColor)
+        public static Grapher<VertexBase> ColorVerticesVarRandom(Grapher<VertexBase> graphToColor)
         {
             var graph = graphToColor.Clone();
 

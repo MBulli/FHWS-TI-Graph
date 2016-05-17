@@ -20,7 +20,7 @@ namespace Graph
 
             SetPrefilledSudokuFields(graph, prefilledSudokuFields);
 
-            graph = GreedyColAlgorithm.ColorGraph(graph);
+            graph = GreedyColAlgorithm.ColorVertices(graph);
             return graph;
         }
 
