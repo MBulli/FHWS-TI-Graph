@@ -16,11 +16,17 @@ namespace Graph
 
             foreach(string line in content)
             {
-                string[] subs = line.Split(' ');
+                string[] subs = line.Split(new char[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
 
                 if(subs.Length <= 1)
                     continue;
-                
+
+                // Remove whitespaces
+                for (int i = 0; i < subs.Length-1; i++)
+                {
+                    subs[i] = subs[i]?.Trim();
+                }
+
                 if(subs[0] == "knoten")
                 {
                     string name = subs[1];
