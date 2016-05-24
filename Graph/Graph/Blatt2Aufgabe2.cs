@@ -18,10 +18,18 @@ namespace Graph
             prefilledSudokuFields.Add("L", 3);
             prefilledSudokuFields.Add("P", 0);
 
+            graph.Vertices.ForEach(v => v.Color = -1);
+
             SetPrefilledSudokuFields(graph, prefilledSudokuFields);
 
-            graph = GreedyColAlgorithm.ColorVertices(graph);
-            return graph;
+            var newgraph = graph.Clone();
+
+            for (int i = 0; i < 1000; i++)
+            {
+                newgraph = GreedyColAlgorithm.ColorVerticesVarPrefilledRandom(graph);
+            }
+           
+            return newgraph;
         }
 
         private static void SetPrefilledSudokuFields(Grapher<VertexBase> inputGraph, Dictionary<String, int> prefilledSudokuFields)

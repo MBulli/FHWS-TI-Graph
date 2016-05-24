@@ -28,6 +28,32 @@ namespace Graph
             return graph;
         }
 
+        public static Grapher<VertexBase> ColorVerticesPrefilled(Grapher<VertexBase> graphToColor)
+        {
+            var graph = graphToColor.Clone();
+
+            foreach(var v in graph.Vertices)
+            {
+                if(v.Color == -1)
+                {
+                    v.Color = int.MaxValue;
+                }
+            }
+
+            foreach (var v in graph.Vertices)
+            {
+                var adjacentColors = from i in graph.Neighbours(v)
+                                     where i.Color != int.MaxValue
+                                     select i.Color;
+
+                v.Color = Enumerable.Range(0, adjacentColors.MaxOrDefault() + 2)
+                                    .Except(adjacentColors)
+                                    .Min();
+            }
+
+            return graph;
+        }
+
         public static Grapher<VertexBase> ColorVerticesVar(Grapher<VertexBase> graphToColor)
         {
             var graph = graphToColor.Clone();
@@ -67,6 +93,39 @@ namespace Graph
                                          .Min();
             }
 
+            return graph;
+        }
+
+        public static Grapher<VertexBase> ColorVerticesVarPrefilledRandom(Grapher<VertexBase> graphToColor)
+        {
+            int maxColorCount = -1;
+            var graph = graphToColor.Clone();
+
+            foreach (var v in graph.Vertices)
+            {
+                if (v.Color == -1)
+                {
+                    v.Color = int.MaxValue;
+                }
+            }
+
+            VertexBase vertex;
+            while ((vertex = graph.Vertices.Where(v => v.Color == int.MaxValue).RandomElementOrDefault()) != null)
+            {
+                var adjacentColors = from i in graph.Neighbours(vertex)
+                                     where i.Color != int.MaxValue
+                                     select i.Color;
+
+                vertex.Color = Enumerable.Range(0, adjacentColors.MaxOrDefault() + 2)
+                                         .Except(adjacentColors)
+                                         .Min();
+                if(vertex.Color >= maxColorCount)
+                {
+                    maxColorCount = vertex.Color;
+                }
+            }
+
+            Console.WriteLine("Max Color Count: " + (maxColorCount + 1));
             return graph;
         }
     }
